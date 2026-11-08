@@ -3,75 +3,63 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>SILKYSINGZ GEOAI | GAMBIA SEA LEVEL RISE INTELLIGENCE</title>
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>SILKYSINGZ GEOAI | GAMBIA DEFORESTATION INTELLIGENCE</title>
 
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@turf/turf@7/turf.min.js"></script>
 <script src="https://cdn.plot.ly/plotly-2.35.2.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/geotiff@2.1.3/dist-browser/geotiff.js"></script>
 
 <style>
 :root{
- --navy:#102b46;--blue:#1769aa;--cyan:#0ea5a4;
- --bg:#f2f5f8;--panel:#fff;--line:#dce4ec;
- --text:#243447;--muted:#66788a;--orange:#ed8b27;
+ --navy:#102b46;--blue:#1769aa;--green:#16845b;
+ --bg:#f2f5f8;--white:#fff;--line:#dce4ec;
+ --text:#26384a;--muted:#6b7b8c;--red:#d94841;
 }
 *{box-sizing:border-box}
-body{margin:0;font-family:Arial,sans-serif;background:var(--bg);color:var(--text)}
-header{
- background:linear-gradient(110deg,#102b46,#1769aa);
- color:white;padding:17px 22px;
-}
+body{margin:0;background:var(--bg);font-family:Arial,sans-serif;color:var(--text)}
+header{background:linear-gradient(110deg,#102b46,#1769aa);color:#fff;padding:17px 22px}
 header h1{font-size:21px;margin:0 0 6px}
-header p{margin:0;font-size:12px;color:#d9e9f7}
+header p{font-size:12px;margin:0;color:#dceafa}
 .topline{display:flex;justify-content:space-between;align-items:center;gap:12px}
-.status{font-size:11px;background:#ffffff20;padding:7px 10px;border-radius:5px}
+.status{font-size:11px;background:#ffffff20;padding:8px 11px;border-radius:5px}
 .layout{
- display:grid;grid-template-columns:minmax(250px,1fr) minmax(350px,1fr) minmax(250px,1fr);
- gap:10px;padding:10px;height:calc(100vh - 91px);min-height:650px;
+ display:grid;
+ grid-template-columns:minmax(250px,1fr) minmax(350px,1fr) minmax(250px,1fr);
+ gap:10px;padding:10px;height:calc(100vh - 90px);min-height:680px
 }
-.panel{
- background:var(--panel);border:1px solid var(--line);border-radius:8px;
- min-width:0;overflow-y:auto;padding:13px;
-}
+.panel{background:#fff;border:1px solid var(--line);border-radius:8px;padding:13px;min-width:0;overflow-y:auto}
 .map-panel{padding:0;overflow:hidden;display:flex;flex-direction:column}
-.section-title{
- font-size:13px;font-weight:bold;color:var(--navy);
- border-bottom:1px solid var(--line);padding-bottom:9px;margin:2px 0 12px;
-}
+.section-title{font-size:13px;font-weight:bold;color:var(--navy);border-bottom:1px solid var(--line);padding-bottom:9px;margin:2px 0 12px}
 label{display:block;font-size:11px;font-weight:bold;color:#526579;margin:11px 0 5px}
-select,input{
- width:100%;padding:9px;border:1px solid #cbd6e1;border-radius:5px;
- background:white;color:#25384a;font-size:12px;
-}
-button{
- padding:10px 12px;border:0;border-radius:5px;background:var(--blue);
- color:white;font-size:12px;font-weight:bold;cursor:pointer;
-}
-button:hover{filter:brightness(.92)}
-button.secondary{background:#637587}
-button.run{background:#087f70}
-.buttons{display:flex;gap:7px;margin-top:12px}
+select,input{width:100%;padding:9px;border:1px solid #cbd6e1;border-radius:5px;background:#fff;color:#25384a;font-size:12px}
+button{padding:10px 12px;border:0;border-radius:5px;background:var(--blue);color:white;font-size:11px;font-weight:bold;cursor:pointer}
+button:hover{filter:brightness(.93)}
+button.green{background:var(--green)}
+button.gray{background:#647789}
+.buttons{display:flex;gap:7px;margin-top:11px}
 .buttons button{flex:1}
 #map{width:100%;flex:1;min-height:450px;background:#e8edf1}
-.map-toolbar{padding:10px;background:white;border-bottom:1px solid var(--line)}
-.map-toolbar select{max-width:230px}
-.map-title{font-size:12px;font-weight:bold;color:var(--navy);margin-bottom:6px}
+.map-toolbar{padding:10px;background:#fff;border-bottom:1px solid var(--line)}
+.map-toolbar select{max-width:210px}
+.map-title{font-size:12px;font-weight:bold;color:var(--navy);margin-bottom:7px}
+.note{font-size:11px;color:var(--muted);line-height:1.5}
 .kpis{display:grid;grid-template-columns:1fr 1fr;gap:8px}
-.kpi{background:#f4f7fa;border:1px solid var(--line);padding:10px;border-radius:6px}
+.kpi{background:#f4f7fa;border:1px solid var(--line);padding:10px;border-radius:6px;min-width:0}
 .kpi small{display:block;font-size:10px;color:var(--muted);margin-bottom:6px}
 .kpi strong{font-size:19px;color:var(--navy);overflow-wrap:anywhere}
-.kpi span{font-size:10px;color:var(--muted)}
-.chart{height:210px;width:100%;margin:8px 0 18px}
-.note{font-size:11px;line-height:1.5;color:var(--muted)}
+.kpi span{display:block;font-size:10px;color:var(--muted);margin-top:3px}
+.chart{height:210px;width:100%;margin:8px 0 17px}
 .legend-row{display:flex;align-items:center;gap:8px;margin:7px 0;font-size:11px}
 .swatch{width:17px;height:12px;border-radius:2px;display:inline-block}
 hr{border:0;border-top:1px solid var(--line);margin:14px 0}
+.error{display:none;background:#fff1ef;border:1px solid #f2c3bc;color:#a43c2e;padding:9px;border-radius:5px;font-size:11px;margin:8px 0}
+.info{background:#eef6fc;border:1px solid #c9deef;color:#315c7b;padding:9px;border-radius:5px;font-size:11px;line-height:1.5;margin:9px 0}
+.progress{height:7px;background:#e6edf3;border-radius:5px;overflow:hidden;margin:8px 0}
+.progress div{height:100%;width:0;background:#16845b;transition:width .2s}
 footer{font-size:10px;color:#718096;line-height:1.6;margin-top:14px}
-.error{background:#fff1ef;border:1px solid #f2c3bc;color:#a43c2e;padding:9px;border-radius:5px;font-size:11px;margin:8px 0;display:none}
-.success{background:#eaf8f3;border:1px solid #b9e3d3;color:#176c54;padding:9px;border-radius:5px;font-size:11px;margin:8px 0}
-#loading{font-size:11px;color:var(--muted);padding:7px 0}
 @media(max-width:950px){
  .layout{height:auto;grid-template-columns:1fr;min-height:0}
  .panel{max-height:none}
@@ -84,10 +72,10 @@ footer{font-size:10px;color:#718096;line-height:1.6;margin-top:14px}
 <header>
  <div class="topline">
   <div>
-   <h1>GAMBIA SEA LEVEL RISE INTELLIGENCE</h1>
-   <p>Coastal exposure screening • Elevation modelling • Sea-level scenarios • GIS-Cartography Unit • Gambia Bureau of Statistics</p>
+   <h1>GAMBIA DEFORESTATION INTELLIGENCE</h1>
+   <p>Forest Change Monitoring • Annual Tree-Cover Loss • Spatial Analysis • 2000–2025</p>
   </div>
-  <div class="status">SILKYSINGZ GEOAI | RESEARCH DASHBOARD</div>
+  <div class="status">SILKYSINGZ GEOAI | GIS-CARTOGRAPHY UNIT</div>
  </div>
 </header>
 
@@ -96,7 +84,8 @@ footer{font-size:10px;color:#718096;line-height:1.6;margin-top:14px}
 <!-- LEFT: CONTROLS -->
 <aside class="panel">
  <div class="section-title">CONTROLS & ADMINISTRATIVE SELECTION</div>
- <div id="loading">Loading Gambia enumeration area boundaries from GitHub...</div>
+
+ <div id="loading" class="note">Loading Gambia enumeration area boundaries from GitHub...</div>
  <div id="loadError" class="error"></div>
 
  <label>Region / RCO</label>
@@ -115,58 +104,60 @@ footer{font-size:10px;color:#718096;line-height:1.6;margin-top:14px}
  <select id="ea"><option value="">All enumeration areas</option></select>
 
  <hr>
- <div class="section-title">SEA-LEVEL SCENARIO</div>
+ <div class="section-title">FOREST CHANGE ANALYSIS</div>
 
- <label>Projection year</label>
- <select id="year">
-  <option value="2030">2030</option>
-  <option value="2050" selected>2050</option>
-  <option value="2075">2075</option>
-  <option value="2100">2100</option>
+ <label>Map display year</label>
+ <select id="mapYear"></select>
+
+ <label>Baseline canopy density threshold</label>
+ <select id="canopy">
+  <option value="10">10% canopy cover</option>
+  <option value="20">20% canopy cover</option>
+  <option value="30" selected>30% canopy cover</option>
+  <option value="50">50% canopy cover</option>
+  <option value="75">75% canopy cover</option>
  </select>
 
- <label>Scenario</label>
- <select id="scenario">
-  <option value="3">Low — 3 mm/year</option>
-  <option value="6" selected>Medium — 6 mm/year</option>
-  <option value="10">High — 10 mm/year</option>
- </select>
-
- <label>Additional tide / storm-surge allowance (metres)</label>
- <input id="surge" type="number" min="0" max="10" step="0.1" value="0">
-
- <label>Vertical datum adjustment (metres)</label>
- <input id="datum" type="number" step="0.1" value="0">
-
- <label>DEM sampling resolution</label>
+ <label>Raster sampling resolution</label>
  <select id="resolution">
-  <option value="28">Coarse — faster</option>
-  <option value="42" selected>Standard</option>
-  <option value="60">Detailed — slower</option>
+  <option value="250">250 × 250 — faster</option>
+  <option value="450" selected>450 × 450 — standard</option>
+  <option value="650">650 × 650 — detailed</option>
+ </select>
+
+ <label>Analysis period</label>
+ <select id="period">
+  <option value="all">2001–2025</option>
+  <option value="2001-2010">2001–2010</option>
+  <option value="2011-2020">2011–2020</option>
+  <option value="2021-2025">2021–2025</option>
  </select>
 
  <div class="buttons">
-  <button class="run" onclick="runSimulation()">RUN SIMULATION</button>
-  <button class="secondary" onclick="resetDashboard()">RESET</button>
+  <button class="green" onclick="runAnalysis()">RUN ANALYSIS</button>
+  <button class="gray" onclick="resetDashboard()">RESET</button>
  </div>
 
- <div id="simulationMessage" class="note" style="margin-top:10px">
-  Select an administrative area and run the simulation.
+ <div class="progress"><div id="progressBar"></div></div>
+ <div id="analysisStatus" class="note">Select an area and run the analysis.</div>
+
+ <div class="info">
+  The 2000 canopy layer defines the baseline forest/tree-cover condition. Annual loss observations begin in 2001.
  </div>
 
  <hr>
- <div class="section-title">EXPORT</div>
+ <div class="section-title">EXPORT RESULTS</div>
  <div class="buttons">
-  <button onclick="exportCSV()">SIMULATION CSV</button>
-  <button class="secondary" onclick="exportBoundary()">BOUNDARY JSON</button>
+  <button onclick="exportCSV()">ANNUAL CSV</button>
+  <button class="gray" onclick="exportGeoJSON()">BOUNDARY JSON</button>
  </div>
- <p class="note">The dashboard fetches the JSON directly from GitHub. A local file upload is not required.</p>
+ <button style="width:100%;margin-top:7px" onclick="exportSamples()">SAMPLE GRID CSV</button>
 
  <footer>
   Produced by Ansu Singhateh<br>
   GIS Analyst | GIS-Cartography Unit<br>
   Gambia Bureau of Statistics<br>
-  • GEOAI • Research and educational use
+  SILKYSINGZ GEOAI • Research and educational use
  </footer>
 </aside>
 
@@ -174,7 +165,7 @@ footer{font-size:10px;color:#718096;line-height:1.6;margin-top:14px}
 <section class="panel map-panel">
  <div class="map-toolbar">
   <div class="map-title">INTERACTIVE MAP — SELECTED AREA ONLY</div>
-  <label style="display:inline-block;margin:0 8px 0 0">Basemap</label>
+  <label style="display:inline-block;margin:0 7px 0 0">Basemap</label>
   <select id="basemap">
    <option value="street">Street Map</option>
    <option value="satellite">Satellite</option>
@@ -188,87 +179,98 @@ footer{font-size:10px;color:#718096;line-height:1.6;margin-top:14px}
 
 <!-- RIGHT: ANALYTICS -->
 <aside class="panel">
- <div class="section-title">SELECTED-AREA ANALYTICS</div>
+ <div class="section-title">SELECTED-AREA FOREST INDICATORS</div>
 
  <div class="kpis">
   <div class="kpi"><small>Selected EA features</small><strong id="kEA">0</strong><span>Enumeration areas</span></div>
   <div class="kpi"><small>Selected area</small><strong id="kArea">0</strong><span>km²</span></div>
-  <div class="kpi"><small>Sea-level rise</small><strong id="kRise">0</strong><span>Metres</span></div>
-  <div class="kpi"><small>Combined threshold</small><strong id="kThreshold">0</strong><span>Metres</span></div>
-  <div class="kpi"><small>Valid DEM samples</small><strong id="kValid">0</strong><span>Grid samples</span></div>
-  <div class="kpi"><small>Below threshold</small><strong id="kFlood">0</strong><span>Grid samples</span></div>
-  <div class="kpi"><small>Sampled cells below threshold</small><strong id="kPercent">0%</strong><span>Of valid samples</span></div>
-  <div class="kpi"><small>Approx. sampled area</small><strong id="kFloodArea">0</strong><span>km²</span></div>
+  <div class="kpi"><small>Total sampled tree-cover loss</small><strong id="kLoss">0</strong><span>Hectares</span></div>
+  <div class="kpi"><small>Average annual loss</small><strong id="kAverage">0</strong><span>Hectares / year</span></div>
+  <div class="kpi"><small>Latest year loss</small><strong id="kLatest">0</strong><span>Hectares</span></div>
+  <div class="kpi"><small>Loss relative to sampled baseline</small><strong id="kPercent">0%</strong><span>Sampled baseline tree cover</span></div>
+  <div class="kpi"><small>Baseline tree-cover samples</small><strong id="kBaseline">0</strong><span>Samples meeting threshold</span></div>
+  <div class="kpi"><small>Loss samples</small><strong id="kSamples">0</strong><span>Detected sampled cells</span></div>
  </div>
 
  <hr>
- <div class="section-title">ELEVATION DISTRIBUTION</div>
- <div id="elevationChart" class="chart"></div>
+ <div class="section-title">ANNUAL TREE-COVER LOSS</div>
+ <div id="annualChart" class="chart"></div>
 
- <div class="section-title">SEA-LEVEL SCENARIO CURVE</div>
- <div id="scenarioChart" class="chart"></div>
+ <div class="section-title">CUMULATIVE TREE-COVER LOSS</div>
+ <div id="cumulativeChart" class="chart"></div>
 
- <div class="section-title">ELEVATION VS THRESHOLD</div>
- <div id="thresholdChart" class="chart"></div>
+ <div class="section-title">LOSS BY PERIOD</div>
+ <div id="periodChart" class="chart"></div>
 
  <div class="section-title">MAP LEGEND</div>
- <div class="legend-row"><span class="swatch" style="background:#2478bd"></span>Selected EA boundary</div>
- <div class="legend-row"><span class="swatch" style="background:#e63946"></span>Sampled terrain below scenario threshold</div>
- <div class="legend-row"><span class="swatch" style="background:#36a6a0"></span>Terrain above scenario threshold</div>
- <div class="legend-row"><span class="swatch" style="background:#8b9aaa"></span>No valid elevation sample</div>
+ <div class="legend-row"><span class="swatch" style="background:#1769aa"></span>Selected EA boundary</div>
+ <div class="legend-row"><span class="swatch" style="background:#d73027"></span>Tree-cover loss in selected display year</div>
+ <div class="legend-row"><span class="swatch" style="background:#238b45"></span>Baseline tree cover meeting threshold</div>
+ <div class="legend-row"><span class="swatch" style="background:#a9b4bf"></span>Other / non-baseline tree cover</div>
 
  <hr>
- <div class="section-title">METHODOLOGY & DATA SOURCES</div>
+ <div class="section-title">NATIONAL ANNUAL DATA</div>
+ <div id="nationalStatus" class="note">National statistics will load from the Global Forest Watch data API.</div>
+ <div id="nationalChart" class="chart"></div>
+
+ <hr>
+ <div class="section-title">DATA SOURCES & METHODOLOGY</div>
+ <p class="note"><b>Forest change:</b> Hansen/UMD Global Forest Change v1.13, Landsat-based, approximately 30 m spatial resolution.</p>
+ <p class="note"><b>Baseline:</b> Tree canopy cover in 2000. The canopy threshold can be adjusted in the controls.</p>
+ <p class="note"><b>Annual loss:</b> Loss-year raster values 1–25 represent 2001–2025. Zero indicates no detected loss during the observation period.</p>
+ <p class="note"><b>Area calculation:</b> Sampled raster cells meeting the baseline canopy threshold and showing loss are converted to approximate hectares.</p>
+ <p class="note"><b>Important:</b> Tree-cover loss is not automatically deforestation. It includes disturbance in natural forests, plantations and other tree-cover types, including fire and temporary loss. It does not subtract subsequent regrowth.</p>
+ <p class="note">The sample-grid estimate is an approximation, not a complete count of every 30 m pixel. National statistics and selected-area estimates have different spatial aggregation methods.</p>
+ <p class="note">Methodological changes in the Global Forest Change time series mean that comparisons across some years should be interpreted cautiously.</p>
+
  <p class="note">
-  <b>Administrative boundaries:</b> Census_EAs_Geo.json hosted in the SILKYSINGZ GitHub repository.
- </p>
- <p class="note">
-  <b>Elevation:</b> AWS Terrain Tiles (Terrarium encoding). Elevation is decoded from RGB tile values.
- </p>
- <p class="note">
-  <b>Scenario calculation:</b> Annual sea-level rise rate × years after 2026, converted from millimetres to metres. Tide / surge allowance and vertical datum adjustment are added separately.
- </p>
- <p class="note">
-  <b>Screening method:</b> Terrain samples at or below the selected threshold are classified as potentially exposed. This is a simplified elevation-threshold screening model, not a hydrodynamic flood simulation.
- </p>
- <p class="note">
-  The sampled area is an approximate grid-cell estimate, not a surveyed inundation boundary. Results depend on DEM resolution, tile availability, vertical datum and selected scenario assumptions.
- </p>
- <p class="note">
-  This model does not simulate coastal connectivity, river flow, drainage, tides, erosion, sea defences, subsidence or wave dynamics. It must not be interpreted as an official flood forecast or population exposure estimate.
+  Sources:
+  <a href="https://www.globalforestwatch.org/" target="_blank">Global Forest Watch</a> |
+  <a href="https://storage.googleapis.com/earthenginepartners-hansen/GFC-2025-v1.13/download.html" target="_blank">Hansen GFC download</a>
  </p>
 </aside>
 </div>
 
 <script>
-/* ============================================================
+/* =========================================================
    CONFIGURATION
-============================================================ */
-const GITHUB_GEOJSON =
- "https://raw.githubusercontent.com/silkysingz94-oss/Gambia_Sea_Level_Rise_Intelligence/main/Census_EAs_Geo.json";
+========================================================= */
 
-const DEM_TILE_URL =
- "https://s3.amazonaws.com/elevation-tiles-prod/terrarium/{z}/{x}/{y}.png";
+const ADMIN_URL =
+"https://raw.githubusercontent.com/silkysingz94-oss/Gambia_Deforestation_Intelligenc/main/Census_EAs_Geo.json";
 
-const REFERENCE_YEAR = 2026;
+const GFC_VERSION = "GFC-2025-v1.13";
+
+/* Gambia is in the 20N, 020W 10-degree Hansen tile */
+const TILE_SUFFIX = "20N_020W";
+
+const LOSS_URL =
+`https://storage.googleapis.com/earthenginepartners-hansen/${GFC_VERSION}/Hansen_${GFC_VERSION}_lossyear_${TILE_SUFFIX}.tif`;
+
+const COVER_URL =
+`https://storage.googleapis.com/earthenginepartners-hansen/${GFC_VERSION}/Hansen_${GFC_VERSION}_treecover2000_${TILE_SUFFIX}.tif`;
 
 let allFeatures = [];
 let selectedFeatures = [];
 let boundaryLayer = null;
-let simulationLayer = null;
-let simulationResults = [];
-let tileCache = new Map();
+let forestOverlay = null;
 let baseLayers = {};
 let activeBase = null;
-let map;
 
-/* ============================================================
+let annualResults = [];
+let sampleResults = [];
+let nationalResults = [];
+let lastAnalysis = null;
+
+const $ = id => document.getElementById(id);
+
+/* =========================================================
    MAP AND BASEMAPS
-============================================================ */
-map = L.map("map", {
+========================================================= */
+
+const map = L.map("map",{
  center:[13.45,-15.4],
- zoom:8,
- layers:[]
+ zoom:8
 });
 
 baseLayers.street = L.tileLayer(
@@ -291,159 +293,173 @@ baseLayers.voyager = L.tileLayer(
  {maxZoom:19,attribution:"© CARTO"}
 );
 
-/* Initialize with a real, defined layer */
 activeBase = baseLayers.street;
 activeBase.addTo(map);
 
-document.getElementById("basemap").addEventListener("change",function(){
- const selected = this.value;
- if(!baseLayers[selected]){
-  document.getElementById("mapStatus").textContent="Basemap unavailable";
-  return;
- }
+$("basemap").addEventListener("change",function(){
+ const name=this.value;
+ if(!baseLayers[name]) return;
  if(activeBase && map.hasLayer(activeBase)) map.removeLayer(activeBase);
- activeBase = baseLayers[selected];
+ activeBase=baseLayers[name];
  activeBase.addTo(map);
  activeBase.bringToBack();
- document.getElementById("mapStatus").textContent =
-  selected.toUpperCase()+" basemap active";
+ $("mapStatus").textContent=name.toUpperCase()+" basemap active";
 });
 
 Object.values(baseLayers).forEach(layer=>{
  layer.on("tileerror",()=>{
-  document.getElementById("mapStatus").textContent="Some map tiles could not load";
+  $("mapStatus").textContent="Some basemap tiles failed to load";
  });
 });
 
-/* ============================================================
-   GITHUB JSON LOADING
-============================================================ */
-function showError(message){
- const el=document.getElementById("loadError");
- el.style.display="block";
- el.textContent=message;
+/* =========================================================
+   YEAR SELECTOR
+========================================================= */
+
+for(let year=2001;year<=2025;year++){
+ const option=document.createElement("option");
+ option.value=year;
+ option.textContent=year;
+ if(year===2025) option.selected=true;
+ $("mapYear").appendChild(option);
 }
 
-function hideError(){
- document.getElementById("loadError").style.display="none";
+$("mapYear").addEventListener("change",()=>{
+ if(lastAnalysis) drawForestMap(lastAnalysis);
+});
+
+/* =========================================================
+   ADMIN BOUNDARY DATA
+========================================================= */
+
+function showLoadError(message){
+ $("loadError").style.display="block";
+ $("loadError").textContent=message;
 }
-
-async function loadBoundaries(){
- try{
-  const response=await fetch(GITHUB_GEOJSON,{cache:"no-store"});
-  if(!response.ok) throw new Error("GitHub returned HTTP "+response.status);
-  const json=await response.json();
-
-  if(!json || json.type!=="FeatureCollection" || !Array.isArray(json.features)){
-   throw new Error("The downloaded JSON is not a GeoJSON FeatureCollection.");
-  }
-
-  allFeatures=json.features.filter(f=>
-   f && f.geometry && f.properties
-  );
-
-  if(!allFeatures.length) throw new Error("No valid boundary features found.");
-
-  document.getElementById("loading").textContent=
-   "Loaded "+allFeatures.length.toLocaleString()+" boundary features.";
-  hideError();
-  populateSelectors();
-  updateSelection();
-
- }catch(error){
-  document.getElementById("loading").textContent="Boundary loading failed.";
-  showError("Unable to load the GitHub JSON: "+error.message+
-   " Check that the repository and file are public and the raw URL is correct.");
- }
-}
-
-/* ============================================================
-   ADMINISTRATIVE FILTERS
-============================================================ */
-const $=id=>document.getElementById(id);
-const prop=(f,key)=>String(f.properties?.[key]??"").trim();
 
 function uniqueValues(features,key){
- return [...new Set(features.map(f=>prop(f,key)).filter(v=>v!==""))]
-  .sort((a,b)=>a.localeCompare(b,undefined,{numeric:true}));
+ return [...new Set(features.map(f=>String(f.properties?.[key]??"").trim()).filter(Boolean))]
+ .sort((a,b)=>a.localeCompare(b,undefined,{numeric:true}));
+}
+
+function getProp(feature,key){
+ return String(feature.properties?.[key]??"").trim();
 }
 
 function fillSelect(id,values,defaultText){
- const select=$(id);
- const old=select.value;
- select.innerHTML="";
+ const el=$(id);
+ const old=el.value;
+ el.innerHTML="";
  const first=document.createElement("option");
  first.value="";
  first.textContent=defaultText;
- select.appendChild(first);
- values.forEach(value=>{
-  const opt=document.createElement("option");
-  opt.value=value;
-  opt.textContent=value;
-  select.appendChild(opt);
+ el.appendChild(first);
+ values.forEach(v=>{
+  const option=document.createElement("option");
+  option.value=v;
+  option.textContent=v;
+  el.appendChild(option);
  });
- if(values.includes(old)) select.value=old;
+ if(values.includes(old)) el.value=old;
 }
 
-function getFiltered(level){
+function filterFeatures(level){
  let features=allFeatures;
- if($("region").value) features=features.filter(f=>prop(f,"RCO")===$("region").value);
- if(level!=="region" && $("lga").value) features=features.filter(f=>prop(f,"lganame")===$("lga").value);
- if(level!=="region" && level!=="lga" && $("district").value) features=features.filter(f=>prop(f,"distname")===$("district").value);
- if(level==="ward" || level==="ea"){
-  if($("ward").value) features=features.filter(f=>prop(f,"wardname")===$("ward").value);
- }
- if(level==="ea" && $("ea").value) features=features.filter(f=>prop(f,"feacode")===$("ea").value);
+
+ if($("region").value)
+  features=features.filter(f=>getProp(f,"RCO")===$("region").value);
+
+ if(level!=="region" && $("lga").value)
+  features=features.filter(f=>getProp(f,"lganame")===$("lga").value);
+
+ if(!["region","lga"].includes(level) && $("district").value)
+  features=features.filter(f=>getProp(f,"distname")===$("district").value);
+
+ if(["ward","ea"].includes(level) && $("ward").value)
+  features=features.filter(f=>getProp(f,"wardname")===$("ward").value);
+
+ if(level==="ea" && $("ea").value)
+  features=features.filter(f=>getProp(f,"feacode")===$("ea").value);
+
  return features;
 }
 
-function populateSelectors(){
+function refreshSelectors(){
+ const r=filterFeatures("region");
+ fillSelect("lga",uniqueValues(r,"lganame"),"All LGAs");
+
+ const l=filterFeatures("lga");
+ fillSelect("district",uniqueValues(l,"distname"),"All districts");
+
+ const d=filterFeatures("district");
+ fillSelect("ward",uniqueValues(d,"wardname"),"All wards");
+
+ const w=filterFeatures("ward");
+ const eaValues=[...new Set(w.map(f=>getProp(f,"feacode")).filter(Boolean))].sort();
+ fillSelect("ea",eaValues,"All enumeration areas");
+}
+
+function initialiseSelectors(){
  fillSelect("region",uniqueValues(allFeatures,"RCO"),"All regions");
- refreshLowerSelectors();
+ refreshSelectors();
+
  ["region","lga","district","ward","ea"].forEach(id=>{
   $(id).addEventListener("change",()=>{
    if(id==="region"){
-    $("lga").value="";$("district").value="";$("ward").value="";$("ea").value="";
+    ["lga","district","ward","ea"].forEach(k=>$(k).value="");
    }
    if(id==="lga"){
-    $("district").value="";$("ward").value="";$("ea").value="";
+    ["district","ward","ea"].forEach(k=>$(k).value="");
    }
    if(id==="district"){
-    $("ward").value="";$("ea").value="";
+    ["ward","ea"].forEach(k=>$(k).value="");
    }
    if(id==="ward") $("ea").value="";
-   refreshLowerSelectors();
-   updateSelection();
+
+   refreshSelectors();
+   updateSelectedArea();
   });
  });
 }
 
-function refreshLowerSelectors(){
- const regionFeatures=getFiltered("region");
- fillSelect("lga",uniqueValues(regionFeatures,"lganame"),"All LGAs");
+async function loadBoundaries(){
+ try{
+  const response=await fetch(ADMIN_URL,{cache:"no-store"});
+  if(!response.ok) throw new Error("HTTP "+response.status);
+  const json=await response.json();
 
- const lgaFeatures=getFiltered("lga");
- fillSelect("district",uniqueValues(lgaFeatures,"distname"),"All districts");
+  if(json.type!=="FeatureCollection" || !Array.isArray(json.features)){
+   throw new Error("The JSON is not a GeoJSON FeatureCollection.");
+  }
 
- const districtFeatures=getFiltered("district");
- fillSelect("ward",uniqueValues(districtFeatures,"wardname"),"All wards");
+  allFeatures=json.features.filter(f=>f.geometry&&f.properties);
+  if(!allFeatures.length) throw new Error("No valid boundary features found.");
 
- const wardFeatures=getFiltered("ward");
- const eaValues=[...new Set(wardFeatures.map(f=>prop(f,"feacode")).filter(Boolean))].sort();
- fillSelect("ea",eaValues,"All enumeration areas");
+  $("loading").textContent=
+   "Successfully loaded "+allFeatures.length.toLocaleString()+" EA boundaries.";
+
+  initialiseSelectors();
+  updateSelectedArea();
+
+ }catch(error){
+  showLoadError("Boundary loading error: "+error.message+
+   ". Confirm the GitHub repository and raw JSON URL are publicly accessible.");
+  $("loading").textContent="Boundary loading failed.";
+ }
 }
 
-function updateSelection(){
- selectedFeatures=getFiltered("ea");
- updateMapBoundary();
- updateBasicStats();
- clearSimulation();
+/* =========================================================
+   SELECTED AREA
+========================================================= */
+
+function updateSelectedArea(){
+ selectedFeatures=filterFeatures("ea");
+ updateBoundaryMap();
+ updateAreaStats();
+ clearAnalysis();
 }
 
-/* ============================================================
-   SELECTED-AREA MAP
-============================================================ */
-function updateMapBoundary(){
+function updateBoundaryMap(){
  if(boundaryLayer) map.removeLayer(boundaryLayer);
  boundaryLayer=null;
 
@@ -456,8 +472,8 @@ function updateMapBoundary(){
   type:"FeatureCollection",features:selectedFeatures
  },{
   style:{
-   color:"#1769aa",weight:2,fillColor:"#4ea5dc",
-   fillOpacity:0.10
+   color:"#1769aa",weight:2,
+   fillColor:"#65a9d8",fillOpacity:0.08
   },
   onEachFeature:(feature,layer)=>{
    const p=feature.properties||{};
@@ -474,349 +490,514 @@ function updateMapBoundary(){
 
  const bounds=boundaryLayer.getBounds();
  if(bounds.isValid()) map.fitBounds(bounds,{padding:[20,20],maxZoom:14});
- $("mapStatus").textContent=selectedFeatures.length+" selected feature(s)";
+ $("mapStatus").textContent=selectedFeatures.length+" selected EA feature(s)";
 }
 
-function getSelectedAreaKm2(){
+function selectedAreaKm2(){
  return selectedFeatures.reduce((sum,f)=>{
-  const supplied=Number(f.properties?.Area_sqkm);
-  if(Number.isFinite(supplied)&&supplied>0) return sum+supplied;
+  const area=Number(f.properties?.Area_sqkm);
+  if(Number.isFinite(area)&&area>0) return sum+area;
   try{return sum+turf.area(f)/1e6}catch(e){return sum}
  },0);
 }
 
-function updateBasicStats(){
+function updateAreaStats(){
  $("kEA").textContent=selectedFeatures.length.toLocaleString();
- $("kArea").textContent=getSelectedAreaKm2().toLocaleString(undefined,{maximumFractionDigits:2});
+ $("kArea").textContent=selectedAreaKm2().toLocaleString(undefined,{maximumFractionDigits:2});
 }
 
-function clearSimulation(){
- if(simulationLayer) map.removeLayer(simulationLayer);
- simulationLayer=null;
- simulationResults=[];
- ["kRise","kThreshold","kValid","kFlood","kPercent","kFloodArea"].forEach(id=>$(id).textContent="0");
- ["elevationChart","scenarioChart","thresholdChart"].forEach(id=>{
-  Plotly.purge(id);
+function clearAnalysis(){
+ if(forestOverlay) map.removeLayer(forestOverlay);
+ forestOverlay=null;
+ annualResults=[];
+ sampleResults=[];
+ lastAnalysis=null;
+
+ ["kLoss","kAverage","kLatest","kPercent","kBaseline","kSamples"].forEach(id=>$(id).textContent="0");
+
+ ["annualChart","cumulativeChart","periodChart"].forEach(id=>Plotly.purge(id));
+ $("progressBar").style.width="0%";
+ $("analysisStatus").textContent="Select an area and run the analysis.";
+}
+
+/* =========================================================
+   GFC RASTER READING
+========================================================= */
+
+let lossTiffPromise=null;
+let coverTiffPromise=null;
+
+async function loadRaster(url,type){
+ const tiff=await GeoTIFF.fromUrl(url);
+ const image=await tiff.getImage();
+ return {
+  tiff,image,
+  bbox:image.getBoundingBox(),
+  width:image.getWidth(),
+  height:image.getHeight(),
+  type
+ };
+}
+
+async function getRasters(){
+ if(!lossTiffPromise) lossTiffPromise=loadRaster(LOSS_URL,"loss");
+ if(!coverTiffPromise) coverTiffPromise=loadRaster(COVER_URL,"cover");
+
+ return Promise.all([lossTiffPromise,coverTiffPromise]);
+}
+
+/* Read a selected bounding box from the remote raster.
+   Raster reads use a reduced grid to keep browser memory manageable. */
+async function readRasterWindow(raster,bounds,gridSize){
+ const [minX,minY,maxX,maxY]=bounds;
+ const [rMinX,rMinY,rMaxX,rMaxY]=raster.bbox;
+
+ if(maxX<rMinX||minX>rMaxX||maxY<rMinY||minY>rMaxY){
+  throw new Error("Selected area is outside the available Hansen raster tile.");
+ }
+
+ const x0=Math.max(0,Math.floor((minX-rMinX)/(rMaxX-rMinX)*raster.width));
+ const x1=Math.min(raster.width,Math.ceil((maxX-rMinX)/(rMaxX-rMinX)*raster.width));
+
+ const y0=Math.max(0,Math.floor((rMaxY-maxY)/(rMaxY-rMinY)*raster.height));
+ const y1=Math.min(raster.height,Math.ceil((rMaxY-minY)/(rMaxY-rMinY)*raster.height));
+
+ if(x1<=x0||y1<=y0) throw new Error("Invalid raster window.");
+
+ return raster.image.readRasters({
+  window:[x0,y0,x1,y1],
+  width:gridSize,
+  height:gridSize,
+  samples:[0],
+  interleave:true
  });
 }
 
-/* ============================================================
-   TERRARIUM DEM TILE FUNCTIONS
-============================================================ */
-function lonLatToTile(lon,lat,z){
- const n=Math.pow(2,z);
- const x=Math.floor((lon+180)/360*n);
- const latRad=lat*Math.PI/180;
- const y=Math.floor((1-Math.asinh(Math.tan(latRad))/Math.PI)/2*n);
- return {x,y,z};
-}
+/* =========================================================
+   ANALYSIS GRID
+========================================================= */
 
-function lonLatToPixel(lon,lat,z){
- const n=Math.pow(2,z);
- const px=(lon+180)/360*n*256;
- const latRad=lat*Math.PI/180;
- const py=(1-Math.asinh(Math.tan(latRad))/Math.PI)/2*n*256;
- return {x:Math.floor(px),y:Math.floor(py)};
-}
-
-async function getDemTile(z,x,y){
- const n=Math.pow(2,z);
- x=((x%n)+n)%n;
- if(y<0||y>=n) return null;
- const key=`${z}/${x}/${y}`;
- if(tileCache.has(key)) return tileCache.get(key);
-
- const promise=(async()=>{
-  const url=DEM_TILE_URL.replace("{z}",z).replace("{x}",x).replace("{y}",y);
-  const img=new Image();
-  img.crossOrigin="anonymous";
-  await new Promise((resolve,reject)=>{
-   img.onload=resolve;
-   img.onerror=()=>reject(new Error("DEM tile failed: "+url));
-   img.src=url;
-  });
-  const canvas=document.createElement("canvas");
-  canvas.width=256;canvas.height=256;
-  const ctx=canvas.getContext("2d",{willReadFrequently:true});
-  ctx.drawImage(img,0,0);
-  const data=ctx.getImageData(0,0,256,256).data;
-  return data;
- })();
-
- tileCache.set(key,promise);
- try{return await promise}catch(e){tileCache.delete(key);throw e}
-}
-
-async function sampleElevation(lon,lat,z){
- const pixel=lonLatToPixel(lon,lat,z);
- const tileX=Math.floor(pixel.x/256);
- const tileY=Math.floor(pixel.y/256);
- const localX=((pixel.x%256)+256)%256;
- const localY=((pixel.y%256)+256)%256;
- const data=await getDemTile(z,tileX,tileY);
- if(!data) return null;
- const index=(localY*256+localX)*4;
- const r=data[index],g=data[index+1],b=data[index+2],a=data[index+3];
- if(a===0) return null;
- return r*256+g+b/256-32768;
-}
-
-/* ============================================================
-   GRID GENERATION WITHIN SELECTED GEOMETRY
-============================================================ */
-function pointInsideSelected(lon,lat){
+function pointInAOI(lon,lat){
  const point=turf.point([lon,lat]);
- return selectedFeatures.some(feature=>{
-  try{return turf.booleanPointInPolygon(point,feature)}catch(e){return false}
+ return selectedFeatures.some(f=>{
+  try{return turf.booleanPointInPolygon(point,f)}catch(e){return false}
  });
 }
 
-function getBoundsOfSelected(){
- const fc={type:"FeatureCollection",features:selectedFeatures};
- return turf.bbox(fc);
+function getAOIBounds(){
+ return turf.bbox({
+  type:"FeatureCollection",
+  features:selectedFeatures
+ });
 }
 
-function generateGrid(count){
- const [minX,minY,maxX,maxY]=getBoundsOfSelected();
- const points=[];
- const dx=(maxX-minX)/count;
- const dy=(maxY-minY)/count;
-
- for(let row=0;row<count;row++){
-  for(let col=0;col<count;col++){
-   const lon=minX+(col+0.5)*dx;
-   const lat=minY+(row+0.5)*dy;
-   if(pointInsideSelected(lon,lat)){
-    points.push({lon,lat,row,col});
-   }
-  }
- }
- return {points,dx,dy,bounds:[minX,minY,maxX,maxY]};
+function selectedPeriod(){
+ const p=$("period").value;
+ if(p==="all") return [2001,2025];
+ const parts=p.split("-").map(Number);
+ return parts;
 }
 
-/* ============================================================
-   SIMULATION
-============================================================ */
-async function runSimulation(){
+function areaPerGridCellHa(bounds,n){
+ const [minX,minY,maxX,maxY]=bounds;
+ const midLat=(minY+maxY)/2;
+ const widthKm=(maxX-minX)*111.32*Math.cos(midLat*Math.PI/180);
+ const heightKm=(maxY-minY)*111.32;
+ return Math.abs(widthKm*heightKm/(n*n))*100;
+}
+
+/* =========================================================
+   MAIN ANALYSIS
+========================================================= */
+
+async function runAnalysis(){
  if(!selectedFeatures.length){
-  $("simulationMessage").textContent="Please select a region, LGA, district, ward or EA first.";
+  $("analysisStatus").textContent="Select a region, LGA, district, ward or EA first.";
   return;
  }
 
- clearSimulation();
-
- const year=Number($("year").value);
- const rate=Number($("scenario").value);
- const surge=Math.max(0,Number($("surge").value)||0);
- const datum=Number($("datum").value)||0;
- const elapsed=year-REFERENCE_YEAR;
- const rise=rate*elapsed/1000;
- const threshold=rise+surge+datum;
-
- $("kRise").textContent=rise.toFixed(3);
- $("kThreshold").textContent=threshold.toFixed(3);
- $("simulationMessage").textContent="Generating sample grid and retrieving elevation tiles...";
-
- const count=Number($("resolution").value);
- const grid=generateGrid(count);
- if(!grid.points.length){
-  $("simulationMessage").textContent="No sample points found inside the selected boundary.";
-  return;
- }
-
- const z=12;
- const results=[];
- let failures=0;
- const batchSize=20;
+ clearAnalysis();
+ $("analysisStatus").textContent="Loading Hansen Global Forest Change raster data...";
 
  try{
-  for(let i=0;i<grid.points.length;i+=batchSize){
-   const batch=grid.points.slice(i,i+batchSize);
-   const values=await Promise.all(batch.map(async p=>{
-    try{
-     const elevation=await sampleElevation(p.lon,p.lat,z);
-     if(elevation===null||!Number.isFinite(elevation)) return {...p,elevation:null};
-     return {...p,elevation,exposed:elevation<=threshold};
-    }catch(e){
-     failures++;
-     return {...p,elevation:null};
+  const [lossRaster,coverRaster]=await getRasters();
+  const bounds=getAOIBounds();
+  const n=Number($("resolution").value);
+  const canopyThreshold=Number($("canopy").value);
+  const [startYear,endYear]=selectedPeriod();
+
+  $("analysisStatus").textContent="Reading loss-year raster window...";
+  const lossData=await readRasterWindow(lossRaster,bounds,n);
+
+  $("progressBar").style.width="35%";
+  $("analysisStatus").textContent="Reading 2000 tree-cover baseline...";
+  const coverData=await readRasterWindow(coverRaster,bounds,n);
+
+  const [minX,minY,maxX,maxY]=bounds;
+  const cellAreaHa=areaPerGridCellHa(bounds,n);
+
+  const annualMap={};
+  for(let year=2001;year<=2025;year++) annualMap[year]=0;
+
+  const samples=[];
+  let baselineCount=0;
+  let lossSampleCount=0;
+  let totalLoss=0;
+
+  for(let row=0;row<n;row++){
+   for(let col=0;col<n;col++){
+    const lon=minX+(col+0.5)/n*(maxX-minX);
+    const lat=maxY-(row+0.5)/n*(maxY-minY);
+
+    if(!pointInAOI(lon,lat)) continue;
+
+    const index=row*n+col;
+    const cover=Number(coverData[index]);
+    const loss=Number(lossData[index]);
+
+    if(!Number.isFinite(cover)||!Number.isFinite(loss)) continue;
+
+    const qualifies=cover>=canopyThreshold;
+    const year=loss>=1&&loss<=25?2000+loss:null;
+
+    const sample={
+     lon,lat,cover,loss,year,
+     qualifies,
+     lossHa:qualifies&&year?cellAreaHa:0
+    };
+
+    samples.push(sample);
+
+    if(qualifies){
+     baselineCount++;
+     if(year){
+      annualMap[year]+=cellAreaHa;
+      totalLoss+=cellAreaHa;
+      lossSampleCount++;
+     }
     }
-   }));
-   results.push(...values);
-   $("simulationMessage").textContent=
-    "Sampling elevation: "+Math.min(i+batchSize,grid.points.length)+
-    " / "+grid.points.length;
+   }
   }
 
-  simulationResults=results;
-  const valid=results.filter(p=>Number.isFinite(p.elevation));
-  const exposed=valid.filter(p=>p.exposed);
-  const fraction=valid.length?exposed.length/valid.length:0;
+  const filteredAnnual=[];
+  for(let year=startYear;year<=endYear;year++){
+   filteredAnnual.push({
+    year,
+    loss:annualMap[year]||0
+   });
+  }
 
-  const kmPerDegreeLat=111.32;
-  const meanLat=(grid.bounds[1]+grid.bounds[3])/2;
-  const kmPerDegreeLon=111.32*Math.cos(meanLat*Math.PI/180);
-  const cellArea=Math.abs(grid.dx*kmPerDegreeLon*grid.dy*kmPerDegreeLat);
+  sampleResults=samples;
+  annualResults=filteredAnnual;
+  lastAnalysis={
+   samples,
+   bounds,
+   gridSize:n,
+   canopyThreshold,
+   annualMap,
+   cellAreaHa
+  };
 
-  const approximateArea=exposed.length*cellArea;
+  updateKPIs(annualMap,baselineCount,lossSampleCount,totalLoss);
+  drawCharts(filteredAnnual,annualMap);
+  drawForestMap(lastAnalysis);
 
-  $("kValid").textContent=valid.length.toLocaleString();
-  $("kFlood").textContent=exposed.length.toLocaleString();
-  $("kPercent").textContent=(fraction*100).toFixed(1)+"%";
-  $("kFloodArea").textContent=approximateArea.toFixed(3);
-
-  drawSimulationOverlay(results,grid.bounds);
-  drawCharts(valid,threshold,year,rate,rise,surge,datum);
-
-  $("simulationMessage").textContent=
-   "Simulation complete. "+valid.length+" valid elevation samples."+
-   (failures?" "+failures+" DEM samples could not be retrieved.":"");
+  $("progressBar").style.width="100%";
+  $("analysisStatus").textContent=
+   "Analysis completed. "+samples.length.toLocaleString()+
+   " selected-area grid samples were evaluated.";
 
  }catch(error){
-  $("simulationMessage").textContent="Simulation failed: "+error.message;
+  $("analysisStatus").textContent="Analysis failed: "+error.message;
+  $("loadError").style.display="block";
+  $("loadError").textContent=
+   "Raster access error: "+error.message+
+   ". Check your internet connection, the GFC tile URL and browser CORS access.";
  }
 }
 
-/* ============================================================
-   DRAW SELECTED-AREA OVERLAY
-============================================================ */
-function drawSimulationOverlay(results,bounds){
- const canvas=document.createElement("canvas");
- const width=900,height=900;
- canvas.width=width;canvas.height=height;
- const ctx=canvas.getContext("2d");
- const [minX,minY,maxX,maxY]=bounds;
+/* =========================================================
+   INDICATORS
+========================================================= */
 
- results.forEach(p=>{
-  if(!Number.isFinite(p.elevation)) return;
-  const x=Math.floor((p.lon-minX)/(maxX-minX)*width);
-  const y=Math.floor((maxY-p.lat)/(maxY-minY)*height);
-  const cellW=Math.max(2,width/Number($("resolution").value));
-  const cellH=Math.max(2,height/Number($("resolution").value));
-  ctx.fillStyle=p.exposed?"rgba(230,57,70,0.72)":"rgba(54,166,160,0.30)";
-  ctx.fillRect(x-cellW/2,y-cellH/2,cellW+1,cellH+1);
- });
+function updateKPIs(annualMap,baselineCount,lossCount,totalLoss){
+ const years=annualResults.map(d=>d.year);
+ const values=annualResults.map(d=>d.loss);
+ const periodTotal=values.reduce((a,b)=>a+b,0);
+ const average=values.length?periodTotal/values.length:0;
 
- const imageUrl=canvas.toDataURL("image/png");
- if(simulationLayer) map.removeLayer(simulationLayer);
+ const latestYear=Math.max(...years);
+ const latestLoss=annualMap[latestYear]||0;
+ const baselineArea=baselineCount*lastAnalysis.cellAreaHa;
+ const percent=baselineArea?periodTotal/baselineArea*100:0;
 
- simulationLayer=L.imageOverlay(imageUrl,[
-  [minY,minX],[maxY,maxX]
- ],{opacity:0.85,interactive:false}).addTo(map);
-
- if(boundaryLayer) boundaryLayer.bringToFront();
+ $("kLoss").textContent=periodTotal.toLocaleString(undefined,{maximumFractionDigits:2});
+ $("kAverage").textContent=average.toLocaleString(undefined,{maximumFractionDigits:2});
+ $("kLatest").textContent=latestLoss.toLocaleString(undefined,{maximumFractionDigits:2});
+ $("kPercent").textContent=percent.toFixed(2)+"%";
+ $("kBaseline").textContent=baselineCount.toLocaleString();
+ $("kSamples").textContent=lossCount.toLocaleString();
 }
 
-/* ============================================================
+/* =========================================================
+   MAP OVERLAY
+========================================================= */
+
+function drawForestMap(result){
+ if(!result) return;
+ if(forestOverlay) map.removeLayer(forestOverlay);
+
+ const n=result.gridSize;
+ const canvas=document.createElement("canvas");
+ canvas.width=n;
+ canvas.height=n;
+
+ const ctx=canvas.getContext("2d");
+ const image=ctx.createImageData(n,n);
+ const displayYear=Number($("mapYear").value);
+ const threshold=result.canopyThreshold;
+
+ result.samples.forEach(p=>{
+  const col=Math.floor((p.lon-result.bounds[0])/(result.bounds[2]-result.bounds[0])*n);
+  const row=Math.floor((result.bounds[3]-p.lat)/(result.bounds[3]-result.bounds[1])*n);
+
+  if(col<0||row<0||col>=n||row>=n) return;
+
+  const idx=(row*n+col)*4;
+
+  if(!p.qualifies){
+   image.data[idx]=169;
+   image.data[idx+1]=180;
+   image.data[idx+2]=191;
+   image.data[idx+3]=0;
+  }else if(p.year===displayYear){
+   image.data[idx]=215;
+   image.data[idx+1]=48;
+   image.data[idx+2]=39;
+   image.data[idx+3]=225;
+  }else{
+   image.data[idx]=35;
+   image.data[idx+1]=139;
+   image.data[idx+2]=69;
+   image.data[idx+3]=90;
+  }
+ });
+
+ ctx.putImageData(image,0,0);
+
+ const url=canvas.toDataURL("image/png");
+ forestOverlay=L.imageOverlay(url,[
+  [result.bounds[1],result.bounds[0]],
+  [result.bounds[3],result.bounds[2]]
+ ],{opacity:0.88,interactive:false}).addTo(map);
+
+ if(boundaryLayer) boundaryLayer.bringToFront();
+
+ $("mapStatus").textContent=
+  "Tree-cover loss display: "+displayYear+" | Canopy threshold: "+threshold+"%";
+}
+
+/* =========================================================
    CHARTS
-============================================================ */
-function chartLayout(title){
+========================================================= */
+
+function baseLayout(title){
  return {
   title:{text:title,font:{size:12}},
-  margin:{l:42,r:15,t:35,b:38},
-  paper_bgcolor:"white",plot_bgcolor:"white",
+  margin:{l:45,r:15,t:38,b:40},
+  paper_bgcolor:"#fff",
+  plot_bgcolor:"#fff",
   font:{family:"Arial",size:10,color:"#34495e"},
   xaxis:{gridcolor:"#edf1f5"},
   yaxis:{gridcolor:"#edf1f5"}
  };
 }
 
-function drawCharts(valid,threshold,year,rate,rise,surge,datum){
- const elevations=valid.map(p=>p.elevation);
- const exposed=valid.filter(p=>p.exposed).length;
- const safe=valid.length-exposed;
+function drawCharts(data,annualMap){
+ const years=data.map(d=>d.year);
+ const losses=data.map(d=>d.loss);
+ let running=0;
+ const cumulative=losses.map(v=>running+=v);
 
- Plotly.newPlot("elevationChart",[
-  {x:elevations,type:"histogram",marker:{color:"#2478bd"},name:"Elevation"}
- ],chartLayout("Sampled terrain elevation (m)"),{responsive:true,displayModeBar:false});
-
- const years=[2026,2030,2040,2050,2060,2075,2100];
- const rises=years.map(y=>rate*(y-REFERENCE_YEAR)/1000);
- Plotly.newPlot("scenarioChart",[
-  {x:years,y:rises,type:"scatter",mode:"lines+markers",
-   line:{color:"#1769aa",width:3},name:"Sea-level rise"}
+ Plotly.newPlot("annualChart",[
+  {x:years,y:losses,type:"bar",marker:{color:"#27845d"},name:"Loss"}
  ],{
-  ...chartLayout("Scenario rise (m)"),
+  ...baseLayout("Annual tree-cover loss (ha)"),
   xaxis:{title:"Year",gridcolor:"#edf1f5"},
-  yaxis:{title:"Rise (m)",gridcolor:"#edf1f5"}
+  yaxis:{title:"Hectares",gridcolor:"#edf1f5"}
  },{responsive:true,displayModeBar:false});
 
- Plotly.newPlot("thresholdChart",[
-  {x:["Below threshold","Above threshold"],
-   y:[exposed,safe],type:"bar",
-   marker:{color:["#e63946","#36a6a0"]},
-   text:[exposed,safe],textposition:"auto"}
+ Plotly.newPlot("cumulativeChart",[
+  {x:years,y:cumulative,type:"scatter",mode:"lines+markers",
+   line:{color:"#1769aa",width:3},name:"Cumulative loss"}
  ],{
-  ...chartLayout("Elevation samples by threshold"),
-  yaxis:{title:"Sample count",gridcolor:"#edf1f5"}
+  ...baseLayout("Cumulative tree-cover loss (ha)"),
+  xaxis:{title:"Year",gridcolor:"#edf1f5"},
+  yaxis:{title:"Hectares",gridcolor:"#edf1f5"}
+ },{responsive:true,displayModeBar:false});
+
+ const periods=[
+  {name:"2001–2010",start:2001,end:2010},
+  {name:"2011–2020",start:2011,end:2020},
+  {name:"2021–2025",start:2021,end:2025}
+ ];
+
+ const periodValues=periods.map(p=>
+  Object.entries(annualMap)
+   .filter(([year])=>Number(year)>=p.start&&Number(year)<=p.end)
+   .reduce((sum,[,value])=>sum+value,0)
+ );
+
+ Plotly.newPlot("periodChart",[
+  {x:periods.map(p=>p.name),y:periodValues,type:"bar",
+   marker:{color:["#91b8d5","#3d8b77","#d98b35"]}}
+ ],{
+  ...baseLayout("Tree-cover loss by period"),
+  yaxis:{title:"Hectares",gridcolor:"#edf1f5"}
  },{responsive:true,displayModeBar:false});
 }
 
-/* ============================================================
+/* =========================================================
+   NATIONAL STATISTICS FROM GFW API
+========================================================= */
+
+async function loadNationalStatistics(){
+ const sql=
+ "SELECT umd_tree_cover_loss__year, SUM(umd_tree_cover_loss__ha) AS loss_ha "+
+ "FROM data WHERE iso = 'GMB' AND umd_tree_cover_density_2000__threshold = 30 "+
+ "GROUP BY umd_tree_cover_loss__year ORDER BY umd_tree_cover_loss__year";
+
+ const url=
+ "https://data-api.globalforestwatch.org/dataset/gadm__tcl__iso_change/v20260424/download/csv?sql="+
+ encodeURIComponent(sql);
+
+ try{
+  const response=await fetch(url);
+  if(!response.ok) throw new Error("API HTTP "+response.status);
+  const csv=await response.text();
+  const rows=parseCSV(csv);
+
+  if(rows.length<2) throw new Error("No national statistics returned.");
+
+  const headers=rows[0].map(v=>v.trim().toLowerCase());
+  const yearIndex=headers.findIndex(h=>h.includes("year"));
+  const lossIndex=headers.findIndex(h=>h.includes("loss_ha")||h.includes("tree_cover_loss__ha"));
+
+  if(yearIndex<0||lossIndex<0) throw new Error("Unexpected API CSV structure.");
+
+  nationalResults=rows.slice(1).map(row=>({
+   year:Number(row[yearIndex]),
+   loss:Number(row[lossIndex])
+  })).filter(d=>Number.isFinite(d.year)&&Number.isFinite(d.loss));
+
+  $("nationalStatus").textContent=
+   "National tree-cover loss statistics loaded for The Gambia (30% baseline canopy threshold).";
+
+  Plotly.newPlot("nationalChart",[
+   {x:nationalResults.map(d=>d.year),y:nationalResults.map(d=>d.loss),
+    type:"bar",marker:{color:"#1769aa"}}
+  ],{
+   ...baseLayout("Gambia national annual loss (ha)"),
+   xaxis:{title:"Year",gridcolor:"#edf1f5"},
+   yaxis:{title:"Hectares",gridcolor:"#edf1f5"}
+  },{responsive:true,displayModeBar:false});
+
+ }catch(error){
+  $("nationalStatus").textContent=
+   "National API data could not be loaded: "+error.message+
+   ". Selected-area raster analysis is separate.";
+ }
+}
+
+function parseCSV(text){
+ return text.trim().split(/\r?\n/).map(line=>{
+  const result=[];
+  let value="",quoted=false;
+  for(let i=0;i<line.length;i++){
+   const ch=line[i];
+   if(ch==='"'&&line[i+1]==='"'){value+='"';i++}
+   else if(ch==='"') quoted=!quoted;
+   else if(ch===","&&!quoted){result.push(value);value=""}
+   else value+=ch;
+  }
+  result.push(value);
+  return result;
+ });
+}
+
+/* =========================================================
    EXPORTS
-============================================================ */
-function downloadFile(content,filename,type){
+========================================================= */
+
+function downloadFile(content,name,type){
  const blob=new Blob([content],{type});
  const url=URL.createObjectURL(blob);
  const a=document.createElement("a");
- a.href=url;a.download=filename;a.click();
+ a.href=url;
+ a.download=name;
+ a.click();
  URL.revokeObjectURL(url);
 }
 
 function exportCSV(){
- if(!simulationResults.length){
-  alert("Run a simulation first.");return;
- }
- const rows=[["longitude","latitude","elevation_m","below_threshold"]];
- simulationResults.forEach(p=>{
-  rows.push([p.lon,p.lat,p.elevation??"",p.exposed===true]);
- });
- const csv=rows.map(row=>row.map(v=>'"'+String(v).replaceAll('"','""')+'"').join(",")).join("\n");
- downloadFile(csv,"Gambia_Sea_Level_Screening.csv","text/csv");
+ if(!annualResults.length){alert("Run the analysis first.");return}
+ const rows=[["Year","Estimated tree-cover loss (ha)"]];
+ annualResults.forEach(d=>rows.push([d.year,d.loss]));
+ const csv=rows.map(r=>r.join(",")).join("\n");
+ downloadFile(csv,"Gambia_Selected_Area_Annual_Tree_Cover_Loss.csv","text/csv");
 }
 
-function exportBoundary(){
- if(!selectedFeatures.length){
-  alert("Select an area first.");return;
- }
+function exportGeoJSON(){
+ if(!selectedFeatures.length){alert("Select an area first.");return}
  downloadFile(JSON.stringify({
   type:"FeatureCollection",features:selectedFeatures
  },null,2),"Gambia_Selected_Area.json","application/geo+json");
 }
 
-/* ============================================================
+function exportSamples(){
+ if(!sampleResults.length){alert("Run the analysis first.");return}
+ const rows=[["Longitude","Latitude","Tree cover 2000 (%)","Loss year","Baseline threshold met","Estimated sampled loss (ha)"]];
+ sampleResults.forEach(p=>rows.push([
+  p.lon,p.lat,p.cover,p.year||"",p.qualifies,p.lossHa
+ ]));
+ downloadFile(rows.map(r=>r.join(",")).join("\n"),
+  "Gambia_Forest_Change_Samples.csv","text/csv");
+}
+
+/* =========================================================
    RESET
-============================================================ */
+========================================================= */
+
 function resetDashboard(){
  ["region","lga","district","ward","ea"].forEach(id=>$(id).value="");
- ["year","scenario","resolution","basemap"].forEach((id)=>{
-  if(id==="year") $(id).value="2050";
-  if(id==="scenario") $(id).value="6";
-  if(id==="resolution") $(id).value="42";
-  if(id==="basemap") $(id).value="street";
- });
- $("surge").value="0";
- $("datum").value="0";
+ $("mapYear").value="2025";
+ $("canopy").value="30";
+ $("resolution").value="450";
+ $("period").value="all";
+ $("basemap").value="street";
 
  if(activeBase&&map.hasLayer(activeBase)) map.removeLayer(activeBase);
  activeBase=baseLayers.street;
  activeBase.addTo(map);
 
- refreshLowerSelectors();
+ refreshSelectors();
  selectedFeatures=[];
  if(boundaryLayer) map.removeLayer(boundaryLayer);
  boundaryLayer=null;
- clearSimulation();
- updateBasicStats();
+
+ clearAnalysis();
+ updateAreaStats();
  map.setView([13.45,-15.4],8);
- $("simulationMessage").textContent="Dashboard reset. Select an area to begin.";
  $("mapStatus").textContent="National view";
 }
 
-/* ============================================================
-   START
-============================================================ */
+/* =========================================================
+   START APPLICATION
+========================================================= */
+
 loadBoundaries();
+loadNationalStatistics();
 </script>
 </body>
 </html>
+
